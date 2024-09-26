@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>peacefrom.earth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #000000;
+            color: #ffffff;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Crimson Text', serif;
+            font-weight: 600;
+        }
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+            overflow: hidden;
+            padding: 20px;
+            background-image: #000000;
+        }
+        .column {
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 15px;
+            margin: 10px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        .left-column {
+            flex: 1;
+            background-image: url('path/to/your/image.jpg'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 2px solid #ffffff;
+            position: relative;
+        }
+        .left-column-content {
+            position: relative;
+            z-index: 1;
+            color: #ffffff; /* Adjust text color to ensure visibility over your image */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Optional: adds shadow to text for better readability */
+        }
+        .right-column {
+            flex: 2;
+            background: #ffffff;
+            border: 2px solid #ffffff;
+            position: relative;
+            color: #000000;
+            display: flex;
+            overflow: hidden; /* Prevent content from overflowing */
+        }
+        .folder-tabs {
+            width: 30px;
+            background: #ffffff;
+            padding-top: 20px;
+            z-index: 10; /* Ensure tabs are above content */
+        }
+        .tab {
+            background: #e0e0e0;
+            border: 2px solid #000000;
+            border-left: none;
+            border-radius: 0 10px 10px 0;
+            padding: 10px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+        .tab:hover {
+            transform: translateX(5px);
+            box-shadow: 5px 0 10px rgba(0,0,0,0.3);
+            background: #ffffff;
+        }
+        .tab.selected {
+        background-color: #ff69b4; /* Pink color for selected tab */
+        color: #ffffff; /* White text for contrast */
+        border: 2px solid #ffffff; /* White border for selected tab */
+    }
+        .folder-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            order: -1; /* This moves the content to the left of the tabs */
+            height: 100%; /* Ensure full height */
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .bottom-menu {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            background: #ffffff;
+            width: 100%;
+        }
+        .menu-item {
+            text-decoration: none;
+            color: #000000;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .menu-item:hover {
+            color: #ff69b4;
+        }
+        .right-column h2 {
+            color: #000000;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .fuel-gauge, .progress-bar {
+            background: rgba(0,0,0,0.1);
+            border: 2px solid rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+        }
+        .needle, .progress {
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .progress {
+            width: 0;
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress-text {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .fuel-gauge {
+            width: 200px;
+            height: 100px;
+            background-color: #f0f0f0;
+            border-radius: 100px 100px 0 0;
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        .fuel-meter {
+            width: 180px;
+            height: 90px;
+            background-color: #e0e0e0;
+            border-radius: 90px 90px 0 0;
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            overflow: hidden;
+        }
+        .needle {
+            width: 4px;
+            height: 70px;
+            background-color: #ff0000;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: rotate(-90deg);
+            transition: transform 0.5s ease-in-out;
+        }
+        .fuel-marks {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-weight: bold;
+        }
+        .category-toggles {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .category-toggles label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .category-toggles input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .category-content {
+            margin-top: 20px;
+        }
+        .craigslist-links {
+            display: flex;
+            flex-direction: column;
+        }
+        .craigslist-links a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #000;
+        }
+        .metadata {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .featured-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .post-content {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #debug-info {
+            display: none;
+        }
+
+        .post-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .post-navigation button {
+            background-color: #e0e0e0;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .post-navigation button:hover {
+            background-color: #d0d0d0;
+        }
+
+        .donate-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #ff0281; /* Pink color */
+            color: #ffffff;
+            font-size: 24px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            border-radius: 50px; /* Rounded edges */
+            box-shadow: 0 0 20px rgba(211, 150, 180, 0.8), 0 0 40px rgba(255, 105, 180, 0.6); /* Glow effect */
+
+        }
+
+        .donate-button:hover {
+            transform: scale(1.1); /* Slightly enlarge on hover */
+            box-shadow: 0 0 30px rgba(255, 105, 180, 1), 0 0 60px rgba(255, 105, 180, 0.8); /* Stronger glow on hover */
+        }
+
+        .donate-button:active {
+            transform: scale(0.95); /* Shrink on click */
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); /* Dim glow on click */
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="main-content">
+        <div class="column left-column">
+            <div class="left-column-content">
+                             <p class="progress-text">$<span id="monthly-amount">0</span> raised of $500 monthly goal</p>
+                             <div class="fuel-gauge">
+                    <div class="fuel-meter">
+                        <div class="needle" id="monthly-progress"></div>
+                    </div>
+                    <div class="fuel-marks">
+                        <span>E</span>
+                        <span>1/2</span>
+                        <span>F</span>
+                    </div>
+                </div>
+                 <p><small>Resets in <span id="days-left">10</span> days. Rehabilitating from a 5 figure medical bill and the end of both my daytime income sources following loss of transportation access. Offering gifts for supporters on a first come first serve basis. Show record of donation to "make a wish" for your gift below from the various objects listed in the "VTXb_uploads" bank to the right.</small></p>
+
+                
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <p class="progress-text"><span id="percentage">0</span>% of $<span id="goal-amount">4500</span> goal reached</p>
+                <p>$<span id="current-amount">0</span> raised</p>
+                <a href="https://gofund.me/a1c4bc50" target="_blank" class="donate-button">Donate</a>
+                <p><small>Last updated: <span id="last-updated">Loading...</span></small></p>
+                </div>
+        </div>
+        <div class="column right-column">
+            <div class="folder-content">
+                <div id="tab1" class="tab-content active">
+                    <h2>VTXb_uploads</h2>
+                    <div class="category-toggles">
+                        <label><input type="checkbox" onchange="toggleCategory('free')" checked> Free</label>
+                        <label><input type="checkbox" onchange="toggleCategory('words')" unchecked> Words</label>
+                        <label><input type="checkbox" onchange="toggleCategory('media')" unchecked> Media</label>
+                        <label><input type="checkbox" onchange="toggleCategory('gifts')" unchecked> Service</label>
+                    </div>
+                    <div class="craigslist-links">
+                        <a href="https://youtu.be/aFDzSKNLt94" data-categories="gifts free" data-quantity="1">I serve my babyteeth to you on lead crystal [link]</a>
+                        <a href="https://www.ebay.com/itm/204998730929" data-categories="gifts" data-price="By Inquiry" data-quantity="10; Loan Eligible">Your choice from a set of 10 deciduous, naturally shed human milk molars and fragments [link]</a>
+                        <a data-categories="media" data-price="30+" data-quantity="5">HAPPI Pie Special Recipe Booklet</a>
+                        <a data-categories="gifts" data-price="250+" data-quantity="3"> I handcraft a 100% Baobab Oil - "Firebroken Melon" Scented Moisturizing Anointing Oil in any size of your choosing</a>
+                        <a href="https://www.ebay.com/itm/204558518019" data-categories="gifts" data-price="85+" data-quantity="1">I send you a copy of Physicist Robert Tyndall's "On Sound" (c.1881 printing) [link]</a>
+                        <a href="https://n-prolenta.bandcamp.com/merch/blackwood-hall-commemorative-poster" data-categories="words" data-price="25+" data-quantity="40">"Stop The Steal" Framed Poster [link]</a>
+                        <a data-categories="gifts free" data-quantity="2">I make you a website not unlike this one for your very own mutual aid effort :)</a>
+                        <a href="https://www.ebay.com/itm/204558533797" data-categories="gifts" data-price="70+" data-quantity="1"> I send you a Czecholovakian Perfume Bottle Art Glass With Stopper [link]</a>
+                        <a data-categories="media" data-price="15+" data-quantity="10">"Upon The Perch Of Xerxes" Album Demo [Compact Disc]</a>
+                        <a href="https://xxamxum.tech/p.occ.hypv1" data-categories="gifts" data-price="1500+" data-quantity="3">We Negotiate Your Publishing Rights for Forthcoming Digital Course Series Exploring Applications of Algebraic Topological Fiber Bundles Within Interaction Design Wireframing [link]</a>
+                        <a href="https://www.ebay.com/itm/204994540748" data-categories="gifts" data-price="20+" data-quantity="2">I send you a small lot of 3 limited edition Robert Rothschild Premium Reserve Moroccan Carrot Spreads. Simply perfect for tea sandwiches. [link]</a>
+                        <a href="https://www.ebay.com/itm/204565660162" data-categories="gifts" data-price="70+" data-quantity="1">I send you a Neker Art Glass Perfume Flask to Eulogize However You Choose [link]</a>                        <!-- Add more links as needed -->
+                    </div>
+                </div>
+                <div id="tab2" class="tab-content">
+                    <h2>VTXb_downloads</h2>
+                    <div id="blog-post-container">
+                        <div id="current-post"></div>
+                        <div class="post-navigation">
+                            <button id="prev-post" onclick="changePost(-1)">←</button>
+                            <button id="next-post" onclick="changePost(1)">→</button>
+                        </div>
+                    </div>
+                    <div id="debug-info" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="folder-tabs">
+                <div class="tab" onclick="switchTab('tab1')">VTXb_uploads</div>
+                <div class="tab" onclick="switchTab('tab2')">VTXb_downloads</div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-menu">
+        <a <a href="mailto:thewish.club@protonmail.com" class="menu-item">make a wish</a>
+    </div>
+
+    <script>
+        const goalAmount = 9000;
+        const gofundmeUrl = 'https://www.gofundme.com/f/help-move-fwd';
+        let lastMonthlyTotal = 0;  // Store the total at the start of the month
+
+        function updateProgress(amount) {
+            // Update main GoFundMe progress
+            document.getElementById('goal-amount').textContent = goalAmount;
+            document.getElementById('current-amount').textContent = amount;
+
+            const progressPercentage = (amount / goalAmount) * 100;
+            document.getElementById('progress').style.width = `${progressPercentage}%`;
+            document.getElementById('percentage').textContent = progressPercentage.toFixed(1);
+            
+            // Update monthly progress
+            const monthlyAmount = amount - lastMonthlyTotal;
+            document.getElementById('monthly-amount').textContent = monthlyAmount;
+
+            const monthlyProgressPercentage = (monthlyAmount / 500) * 100;
+            const rotationDegree = (monthlyProgressPercentage / 100) * 180 - 90; // -90 to 90 degrees
+            document.getElementById('monthly-progress').style.transform = `rotate(${rotationDegree}deg)`;
+
+            // Update last updated time
+            const now = new Date();
+            document.getElementById('last-updated').textContent = now.toLocaleString();
+
+            // Update days left until reset
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const daysLeft = daysInMonth - now.getDate();
+            document.getElementById('days-left').textContent = daysLeft;
+
+            // Check if it's time to reset the monthly total
+            if (now.getDate() === 1) {
+                lastMonthlyTotal = amount;
+            }
+        }
+
+        function fetchGoFundMeData() {
+            $.ajax({
+                url: gofundmeUrl,
+                type: 'GET',
+                success: function(response) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(response, 'text/html');
+                    const amountRaised = doc.querySelector('meta[property="og:description"]').content.match(/\$[\d,]+/)[0].replace('$', '').replace(',', '');
+                    updateProgress(parseInt(amountRaised));
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching GoFundMe data:', error);
+                }
+            });
+        }
+
+        // Initial fetch
+        fetchGoFundMeData();
+
+        // Fetch every 5 minutes
+        setInterval(fetchGoFundMeData, 5 * 60 * 1000);
+    </script>
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update tab styles if needed
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.style.backgroundColor = '#e0e0e0';
+            });
+            event.target.style.backgroundColor = '#ffffff';
+
+            if (tabId === 'tab2') {
+                fetchWordPressPosts();
+            }
+        }
+
+        function toggleCategory(category) {
+            const checkbox = document.querySelector(`input[onchange="toggleCategory('${category}')"]`);
+            const links = document.querySelectorAll('.craigslist-links a');
+            
+            links.forEach(link => {
+                const categories = link.getAttribute('data-categories').split(' ');
+                if (checkbox.checked) {
+                    if (categories.includes(category)) {
+                        link.style.display = 'block';
+                    }
+                } else {
+                    if (categories.includes(category) && !categories.some(cat => cat !== category && document.querySelector(`input[onchange="toggleCategory('${cat}')"]`).checked)) {
+                        link.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function displayMetadata() {
+            const links = document.querySelectorAll('.craigslist-links a');
+            links.forEach(link => {
+                const categories = link.getAttribute('data-categories').split(' ');
+                const donation = link.getAttribute('data-price');
+                const quantity = link.getAttribute('data-quantity');
+                const metadata = document.createElement('span');
+                metadata.className = 'metadata';
+                
+                let metadataText = '';
+                if (!categories.includes('free') && donation) {
+                    metadataText += ` | Donation: $${donation}`;
+                }
+                metadataText += ` | Quantity: ${quantity}`;
+                
+                metadata.textContent = metadataText;
+                link.appendChild(metadata);
+            });
+        }
+
+        // Initialize visibility
+        document.addEventListener('DOMContentLoaded', () => {
+            ['free', 'words', 'media', 'gifts'].forEach(category => toggleCategory(category));
+            displayMetadata();
+        });
+    </script>
+    <script>
+        let allPosts = [];
+        let currentPostIndex = 0;
+
+        function fetchWordPressPosts() {
+            const wpApiUrl = `https://public-api.wordpress.com/rest/v1.1/sites/xxxmarxdaspot.wordpress.com/posts/?number=10&fields=ID,title,date,content,featured_image&_=${Date.now()}`;
+            
+            console.log('Fetching posts...');
+
+            fetch(wpApiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('WordPress API response:', data);
+                    console.log(`Received ${data.posts.length} posts.`);
+
+                    // Sort posts in reverse chronological order
+                    allPosts = data.posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    displayCurrentPost();
+                })
+                .catch(error => {
+                    console.error('Error fetching blog posts:', error);
+                });
+        }
+
+        function displayCurrentPost() {
+            const post = allPosts[currentPostIndex];
+            const postContainer = document.getElementById('current-post');
+            
+            postContainer.innerHTML = `
+                <article class="blog-post">
+                    <h3>${post.title}</h3>
+                    <p class="post-meta">Posted on ${new Date(post.date).toLocaleDateString()}</p>
+                    ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" class="featured-image" onerror="this.onerror=null;this.src='placeholder.jpg';">` : ''}
+                    <div class="post-content">${post.content}</div>
+                </article>
+            `;
+        }
+
+        function changePost(direction) {
+            currentPostIndex = (currentPostIndex + direction + allPosts.length) % allPosts.length;
+            displayCurrentPost();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            
+            if (tabId === 'tab2' && allPosts.length === 0) {
+                fetchWordPressPosts();
+            }
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            switchTab('tab1');
+        });
+    </script>
+</body>
+</html>
