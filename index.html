@@ -6,6 +6,12 @@
     <title>peacefrom.earth</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Source Sans Pro', sans-serif;
             margin: 0;
@@ -178,20 +184,22 @@
             background-color: #ff0000;
             position: absolute;
             bottom: 0;
-            left: 50%;
+            left: 35%;
             transform-origin: bottom center;
             transform: rotate(-90deg);
             transition: transform 0.5s ease-in-out;
         }
         .fuel-marks {
             position: absolute;
-            bottom: 5px;
-            left: 0;
-            right: 0;
+            bottom: 10px; /* Adjust this value to position the labels vertically */
+            left: 10px; /* Align to the left side of the dark area */
+            right: 10px; /* Align to the right side of the dark area */
             display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
+            justify-content: space-between; /* Space out the labels evenly */
+            padding: 0 10px; /* Add some padding for better alignment */
             font-weight: bold;
+            color: #000; /* Change color if needed */
+            pointer-events: none; /* Prevent interaction with the labels */
         }
         .category-toggles {
             display: flex;
@@ -323,6 +331,15 @@
             }
             .menu-item {
                 margin: 5px 0;
+            }
+        }
+        @media (max-width: 768px) {
+            .fuel-gauge {
+                width: 150px; /* Adjust width for smaller screens */
+                height: 75px; /* Adjust height for smaller screens */
+            }
+            .fuel-marks {
+                bottom: 5px; /* Adjust vertical position for smaller screens */
             }
         }
     </style>
