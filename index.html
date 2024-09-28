@@ -170,48 +170,51 @@
             font-weight: bold;
         }
         .fuel-gauge {
-            width: 50vw;
-            height: 25vw;
-            max-width: 200px;
-            max-height: 100px;
-            border-radius: 0;
-            position: relative;
-            overflow: hidden;
-            margin: 20px auto;
-        }
-        .fuel-meter {
-            width: 180px;
-            height: 90px;
-            background-color: #e0e0e0;
-            border-radius: 0;
-            position: absolute;
-            bottom: 0;
-            left: 10px;
-            overflow: hidden;
-        }
-        .needle {
-            width: 4px;
-            height: 70px;
-            background-color: #ff0000;
-            position: absolute;
-            bottom: 0;
-            left: 35%;
-            transform-origin: bottom center;
-            transform: rotate(-90deg);
-            transition: transform 0.5s ease-in-out;
-        }
-        .fuel-marks {
-            position: absolute;
-            bottom: 10px; /* Adjust this value to position the labels vertically */
-            left: 10px; /* Align to the left side of the dark area */
-            right: 10px; /* Align to the right side of the dark area */
-            display: flex;
-            justify-content: space-between; /* Space out the labels evenly */
-            padding: 0 10px; /* Add some padding for better alignment */
-            font-weight: bold;
-            color: #000; /* Change color if needed */
-            pointer-events: none; /* Prevent interaction with the labels */
-        }
+        width: 100%;
+        max-width: 200px;
+        aspect-ratio: 2 / 1;
+        position: relative;
+        margin: 20px auto;
+        background-color: #e0e0e0;
+        border-radius: 0;
+        overflow: hidden;
+    }
+    .fuel-meter {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: #f0f0f0;
+        border-radius:0;
+    }
+    .needle-container {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 4px;
+        height: 100%;
+        transform-origin: bottom center;
+        transform: translateX(-50%) rotate(-90deg);
+        transition: transform 0.5s ease-in-out;
+    }
+    .needle {
+        width: 100%;
+        height: 50%;
+        background-color: #ff0000;
+    }
+    .fuel-marks {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10%;
+        font-weight: bold;
+        color: #000;
+        pointer-events: none;
+    }
         .category-toggles {
             display: flex;
             justify-content: space-around;
@@ -364,15 +367,16 @@
             <div class="left-column-content">
                              <p class="progress-text">$<span id="monthly-amount">250</span> raised of $500 monthly goal</p>
                              <div class="fuel-gauge">
-                    <div class="fuel-meter">
-                        <div class="needle" id="monthly-progress"></div>
-                    </div>
-                    <div class="fuel-marks">
-                        <span>E</span>
-                        <span>1/2</span>
-                        <span>F</span>
-                    </div>
-                </div>
+                                <div class="fuel-meter"></div>
+                                <div class="needle-container" id="monthly-progress">
+                                    <div class="needle"></div>
+                                </div>
+                                <div class="fuel-marks">
+                                    <span>E</span>
+                                    <span>1/2</span>
+                                    <span>F</span>
+                                </div>
+                            </div>
                  <p><small>Resets in <span id="days-left">3</span> days. Rehabilitating from a 5 figure medical bill and the end of both my daytime income sources following loss of transportation access. Offering gifts for supporters on a first come, first serve basis. MAKE A WISH for your gift from the various objects listed in the "VTXb_uploads" bank by presenting a record of your donation.</small></p>
 
                 
@@ -433,63 +437,75 @@
     </div>
 
     <script>
-        const goalAmount = 9000;
-        const gofundmeUrl = 'https://www.gofundme.com/f/help-move-fwd';
-        let lastMonthlyTotal = 0;  // Store the total at the start of the month
+       let useGoFundMeData = false; // Set this to true when you want to use GoFundMe data
+let gofundmeAmount = 0;
+const monthlyGoal = 500;
+const totalGoal = 4500;
+let lastMonthlyTotal = 0;
 
-        function updateProgress(amount) {
-            // Update main GoFundMe progress
-            document.getElementById('goal-amount').textContent = goalAmount;
-            document.getElementById('current-amount').textContent = amount;
-
-            const progressPercentage = (amount / goalAmount) * 100;
-            document.getElementById('progress').style.width = `${progressPercentage}%`;
-            document.getElementById('percentage').textContent = progressPercentage.toFixed(1);
-            
-            // Update monthly progress
-            const monthlyAmount = amount - lastMonthlyTotal;
-            document.getElementById('monthly-amount').textContent = monthlyAmount;
-
-            const monthlyProgressPercentage = (monthlyAmount / 500) * 100;
-            const rotationDegree = (monthlyProgressPercentage / 100) * 180 - 90; // -90 to 90 degrees
-            document.getElementById('monthly-progress').style.transform = `rotate(${rotationDegree}deg)`;
-
-            // Update last updated time
-            const now = new Date();
-            document.getElementById('last-updated').textContent = now.toLocaleString();
-
-            // Update days left until reset
-            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-            const daysLeft = daysInMonth - now.getDate();
-            document.getElementById('days-left').textContent = daysLeft;
-
-            // Check if it's time to reset the monthly total
-            if (now.getDate() === 1) {
-                lastMonthlyTotal = amount;
-            }
+function fetchGoFundMeData() {
+    // Your existing fetch code here
+    $.ajax({
+        url: gofundmeUrl,
+        type: 'GET',
+        success: function(response) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(response, 'text/html');
+            gofundmeAmount = parseInt(doc.querySelector('meta[property="og:description"]').content.match(/\$[\d,]+/)[0].replace('$', '').replace(',', ''));
+            updateProgress();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching GoFundMe data:', error);
         }
+    });
+}
+function updateProgress() {
+    // Get current values
+    let monthlyAmount, currentAmount;
+    
+    if (useGoFundMeData) {
+        currentAmount = gofundmeAmount;
+        monthlyAmount = gofundmeAmount - lastMonthlyTotal;
+    } else {
+        monthlyAmount = parseInt(document.getElementById('monthly-amount').textContent);
+        currentAmount = parseInt(document.getElementById('current-amount').textContent);
+    }
 
-        function fetchGoFundMeData() {
-            $.ajax({
-                url: gofundmeUrl,
-                type: 'GET',
-                success: function(response) {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(response, 'text/html');
-                    const amountRaised = doc.querySelector('meta[property="og:description"]').content.match(/\$[\d,]+/)[0].replace('$', '').replace(',', '');
-                    updateProgress(parseInt(amountRaised));
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching GoFundMe data:', error);
-                }
-            });
-        }
+    // Update monthly progress (fuel gauge)
+    const monthlyProgressPercentage = (monthlyAmount / monthlyGoal) * 100;
+    const rotationDegree = (monthlyProgressPercentage / 100) * 180 - 90; // -90 to 90 degrees
+    document.getElementById('monthly-progress').style.transform = `translateX(-50%) rotate(${rotationDegree}deg)`;
 
-        // Initial fetch
-        fetchGoFundMeData();
+    // Update total progress bar
+    const progressPercentage = (currentAmount / totalGoal) * 100;
+    document.getElementById('progress').style.width = `${progressPercentage}%`;
+    document.getElementById('percentage').textContent = progressPercentage.toFixed(1);
 
-        // Fetch every 5 minutes
-        setInterval(fetchGoFundMeData, 5 * 60 * 1000);
+    // Update displayed amounts
+    document.getElementById('monthly-amount').textContent = monthlyAmount;
+    document.getElementById('current-amount').textContent = currentAmount;
+    document.getElementById('goal-amount').textContent = totalGoal;
+}
+
+// Set up a MutationObserver to watch for changes in the text content
+const observerConfig = { childList: true, subtree: true, characterData: true };
+
+const observer = new MutationObserver(() => {
+    if (!useGoFundMeData) {
+        updateProgress();
+    }
+});
+
+observer.observe(document.body, observerConfig);
+
+
+// Initial update and setup
+updateProgress();
+if (useGoFundMeData) {
+    fetchGoFundMeData();
+    setInterval(fetchGoFundMeData, 5 * 60 * 1000);
+}
+
     </script>
     <script>
         function switchTab(tabId) {
