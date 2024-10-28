@@ -304,14 +304,14 @@
                         <span>F</span>
                     </div>
                 </div>
-                 <p><small>Resets in <span id="days-left">3</span> days. Rehabilitating from a 5 figure medical bill and the end of both my daytime income sources following loss of transportation access. Offering gifts for supporters on a first come first serve basis. Show record of donation to "make a wish" for your gift below from the various objects listed in the "VTXb_uploads" bank to the right.</small></p>
+                 <p><small>Resets in <span id="days-left"></span> days. Rehabilitating from a 5 figure medical bill and the end of both my daytime income sources following loss of transportation access. Offering gifts for supporters on a first come first serve basis. Show record of donation to "make a wish" for your gift below from the various objects listed in the "VTXb_uploads" bank to the right.</small></p>
 
                 
                 <div class="progress-bar">
                     <div class="progress" id="progress"></div>
                 </div>
-                <p class="progress-text"><span id="percentage">7</span>% of $<span id="goal-amount">4500</span> goal reached</p>
-                <p>$<span id="current-amount">385</span> raised</p>
+                <p class="progress-text"><span id="percentage">0</span>% of $<span id="goal-amount">4500</span> goal reached</p>
+                <p>$<span id="current-amount">0</span> raised</p>
                 <a href="https://gofund.me/a1c4bc50" target="_blank" class="donate-button">Donate</a>
                 <p><small>Last updated: <span id="last-updated">Loading...</span></small></p>
                 </div>
@@ -360,28 +360,31 @@
         </div>
     </div>
     <div class="bottom-menu">
-        <a <a href="mailto:thewish.club@protonmail.com" class="menu-item">make a wish</a>
+        <a <a href="https://peacefrom.earth/" class="menu-item">make a wish</a>
     </div>
 
     <script>
         const goalAmount = 9000;
-        const gofundmeUrl = 'https://www.gofundme.com/f/help-move-fwd';
         let lastMonthlyTotal = 0;  // Store the total at the start of the month
 
-        function updateProgress(amount) {
-            // Update main GoFundMe progress
-            document.getElementById('goal-amount').textContent = goalAmount;
-            document.getElementById('current-amount').textContent = amount;
+        // Set your manual donation amounts here
+        let manualDonationAmount = 385; // Total donation amount
+        let monthlyDonationAmount = 335; // Monthly donation amount
 
-            const progressPercentage = (amount / goalAmount) * 100;
+        function updateProgress(totalAmount) {
+            // Update main progress
+            document.getElementById('goal-amount').textContent = goalAmount;
+            document.getElementById('current-amount').textContent = totalAmount;
+
+            const progressPercentage = (totalAmount / goalAmount) * 100;
             document.getElementById('progress').style.width = `${progressPercentage}%`;
             document.getElementById('percentage').textContent = progressPercentage.toFixed(1);
             
             // Update monthly progress
-            const monthlyAmount = amount - lastMonthlyTotal;
+            const monthlyAmount = monthlyDonationAmount; // Use the monthly donation amount directly
             document.getElementById('monthly-amount').textContent = monthlyAmount;
 
-            const monthlyProgressPercentage = (monthlyAmount / 500) * 100;
+            const monthlyProgressPercentage = (monthlyAmount / 500) * 100; // Assuming 500 is the monthly goal
             const rotationDegree = (monthlyProgressPercentage / 100) * 180 - 90; // -90 to 90 degrees
             document.getElementById('monthly-progress').style.transform = `rotate(${rotationDegree}deg)`;
 
@@ -396,103 +399,18 @@
 
             // Check if it's time to reset the monthly total
             if (now.getDate() === 1) {
-                lastMonthlyTotal = amount;
+                lastMonthlyTotal = totalAmount;
             }
         }
 
-        function fetchGoFundMeData() {
-            $.ajax({
-                url: gofundmeUrl,
-                type: 'GET',
-                success: function(response) {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(response, 'text/html');
-                    const amountRaised = doc.querySelector('meta[property="og:description"]').content.match(/\$[\d,]+/)[0].replace('$', '').replace(',', '');
-                    updateProgress(parseInt(amountRaised));
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching GoFundMe data:', error);
-                }
-            });
+        // Function to manually set donation amounts
+        function setDonationAmounts(totalAmount, monthlyAmount) {
+            updateProgress(totalAmount);
+            monthlyDonationAmount = monthlyAmount; // Update the monthly donation amount
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
-    // Function to fetch donation data
-    async function fetchDonationData() {
-        try {
-            const response = await fetch('https://wish-clow-production.up.railway.app/update-donation-data');
-            if (!response.ok) {
-                throw new Error('Failed to fetch donation data');
-            }
-            const data = await response.json();
-            updateProgressBar(data.amountRaised, data.goalAmount);
-        } catch (error) {
-            console.error('Error fetching donation data:', error);
-        }
-    }
-        // Function to fetch donation data
-        async function pushDonationData() {
-        try {
-            const response = await fetch('https://wish-clow-production.up.railway.app/donation-data');
-            if (!response.ok) {
-                throw new Error('Failed to push donation data');
-            }
-            const data = await response.json();
-            updateProgressBar(data.amountRaised, data.goalAmount);
-        } catch (error) {
-            console.error('Error pushing donation data:', error);
-        }
-    }
-
-    // Initialize visibility
-    ['free', 'words', 'media', 'gifts'].forEach(category => toggleCategory(category));
-    displayMetadata();
-
-    // Fetch the data when the page loads
-    fetchDonationData();
-    // Push the data when the page loads
-    pushDonationData();
-});
-
-  // Function to update the progress bar and fuel gauge
-  function updateProgressBar(amountRaised, goalAmount) {
-    // Calculate the percentage
-    const percentage = Math.min((amountRaised / goalAmount) * 100, 100);
-
-    // Update the text and width of the progress bar
-    const progressBar = document.querySelector('#progress-bar');
-    if (progressBar) {
-      progressBar.style.width = `${percentage}%`;
-      progressBar.textContent = `$${amountRaised.toLocaleString()} of $${goalAmount.toLocaleString()} (${percentage.toFixed(1)}%)`;
-    }
-
-    
-    // Update the span elements with live data
-    document.getElementById('monthly-amount').textContent = amountRaised; // Update monthly amount
-    document.getElementById('percentage').textContent = percentage.toFixed(1); // Update percentage
-    document.getElementById('current-amount').textContent = amountRaised; // Update current amount
-    document.getElementById('goal-amount').textContent = goalAmount; // Update goal amount
-
-
-    // Update the fuel gauge if you have an element for it
-    const fuelGauge = document.querySelector('#fuel-gauge');
-    if (fuelGauge) {
-      // Assuming it's a text-based gauge, update accordingly
-      fuelGauge.textContent = `Fuel Level: ${percentage.toFixed(1)}%`;
-      const monthlyProgressPercentage = (amountRaised / monthlyGoal) * 100;
-        const rotationDegree = (monthlyProgressPercentage / 100) * 180 - 90; // -90 to 90 degrees
-        fuelGauge.style.transform = `rotate(${rotationDegree}deg)`;
-    }
-  }
-
-  // Fetch the data when the page loads
-  fetchDonationData();
-    pushDonationData();
-
-
-
-        // Fetch every 5 minutes
-        setInterval(pushDonationData, 5 * 60 * 1000);
+        // Call this function to update the donation amounts
+        setDonationAmounts(manualDonationAmount, monthlyDonationAmount); // This will update the display with the manual amounts
     </script>
     <script>
         function switchTab(tabId) {
