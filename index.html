@@ -366,8 +366,6 @@
     <script>
         const goalAmount = 9000;
         const gofundmeUrl = 'https://www.gofundme.com/f/help-move-fwd';
-        const amount = 385;
-        const MonthlyAmount = 0;
         let lastMonthlyTotal = 0;  // Store the total at the start of the month
 
         function updateProgress(amount) {
@@ -452,6 +450,8 @@
 
     // Fetch the data when the page loads
     fetchDonationData();
+    // Push the data when the page loads
+    pushDonationData();
 });
 
   // Function to update the progress bar and fuel gauge
@@ -487,12 +487,12 @@
 
   // Fetch the data when the page loads
   fetchDonationData();
-grabDonationData();
+    pushDonationData();
 
 
 
         // Fetch every 5 minutes
-        setInterval(grabDonationData, 5 * 60 * 1000);
+        setInterval(pushDonationData, 5 * 60 * 1000);
     </script>
     <script>
         function switchTab(tabId) {
