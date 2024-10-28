@@ -485,11 +485,12 @@
 
   // Fetch the data when the page loads
   fetchDonationData();
+grabDonationData();
 
 
 
         // Fetch every 5 minutes
-        setInterval(fetchDonationData, 5 * 60 * 1000);
+        setInterval(grabDonationData, 5 * 60 * 1000);
     </script>
     <script>
         function switchTab(tabId) {
