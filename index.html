@@ -431,16 +431,16 @@
         }
     }
         // Function to fetch donation data
-        async function fetchDonationData() {
+        async function pushDonationData() {
         try {
             const response = await fetch('https://wish-clow-production.up.railway.app/donation-data');
             if (!response.ok) {
-                throw new Error('Failed to fetch donation data');
+                throw new Error('Failed to push donation data');
             }
             const data = await response.json();
             updateProgressBar(data.amountRaised, data.goalAmount);
         } catch (error) {
-            console.error('Error fetching donation data:', error);
+            console.error('Error pushing donation data:', error);
         }
     }
 
