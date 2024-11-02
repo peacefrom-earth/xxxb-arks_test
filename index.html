@@ -340,6 +340,9 @@
                         <a href="https://www.ebay.com/itm/204994540748" data-categories="gifts" data-price="20+" data-quantity="2">I send you a small lot of 3 limited edition Robert Rothschild Premium Reserve Moroccan Carrot Spreads. Simply perfect for tea sandwiches. [link]</a>
                         <a href="https://www.ebay.com/itm/204565660162" data-categories="gifts" data-price="70+" data-quantity="1">I send you a Neker Art Glass Perfume Flask to Eulogize However You Choose [link]</a>                        <!-- Add more links as needed -->
                     </div>
+                    <script>
+                        displayMetadata(); // Call this function to display metadata after links are rendered
+                    </script>
                 </div>
                 <div id="tab2" class="tab-content">
                     <h2>VTXb_downloads</h2>
@@ -364,12 +367,12 @@
     </div>
 
     <script>
-        const goalAmount = 9000;
+        const goalAmount = 4500;
         let lastMonthlyTotal = 0;  // Store the total at the start of the month
 
         // Set your manual donation amounts here
-        let manualDonationAmount = 385; // Total donation amount
-        let monthlyDonationAmount = 335; // Monthly donation amount
+        let manualDonationAmount = 405; // Total donation amount
+        let monthlyDonationAmount = 20; // Monthly donation amount
 
         function updateProgress(totalAmount) {
             // Update main progress
@@ -529,6 +532,8 @@
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
             switchTab('tab1');
+            ['free', 'words', 'media', 'gifts'].forEach(category => toggleCategory(category));
+            displayMetadata();
         });
     </script>
 </body>
