@@ -50,6 +50,10 @@
             color: #ffffff; /* Adjust text color to ensure visibility over your image */
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Optional: adds shadow to text for better readability */
         }
+        a {
+            color: #ff69b4; /* Change to your desired color */
+            text-decoration: none; /* Optional: remove underline */
+        }
         .right-column {
             flex: 2;
             background: #ffffff;
@@ -131,14 +135,14 @@
         .fuel-gauge, .progress-bar {
             background: rgba(0,0,0,0.1);
             border: 2px solid rgba(0,0,0,0.3);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+            box-shadow: inset 0 0 0px rgba(0, 0, 0, 0.5);
         }
         .needle, .progress {
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         .progress-bar {
-            width: 100%;
-            background-color: #e0e0e0;
+            width: 0%;
+            background-color: #000000;
             border-radius: 5px;
             margin-top: 20px;
         }
@@ -154,17 +158,17 @@
             font-weight: bold;
         }
         .fuel-gauge {
-            width: 200px;
-            height: 100px;
-            background-color: #f0f0f0;
-            border-radius: 100px 100px 0 0;
+            width: 0px;
+            height: 0px;
+            background-color: #000000;
+            border-radius: 0px 0px 0 0;
             position: relative;
             overflow: hidden;
-            margin: 20px auto;
+            margin: 0px auto;
         }
         .fuel-meter {
-            width: 180px;
-            height: 90px;
+            width: 0px;
+            height: 0px;
             background-color: #e0e0e0;
             border-radius: 90px 90px 0 0;
             position: absolute;
@@ -173,8 +177,8 @@
             overflow: hidden;
         }
         .needle {
-            width: 4px;
-            height: 70px;
+            width: 0px;
+            height: 0px;
             background-color: #ff0000;
             position: absolute;
             bottom: 0;
@@ -185,12 +189,12 @@
         }
         .fuel-marks {
             position: absolute;
-            bottom: 5px;
+            bottom: 0px;
             left: 0;
             right: 0;
             display: flex;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 0px;
             font-weight: bold;
         }
         .category-toggles {
@@ -293,28 +297,60 @@
     <div class="main-content">
         <div class="column left-column">
             <div class="left-column-content">
-                             <p class="progress-text">$<span id="monthly-amount">0</span> raised of $500 monthly goal</p>
+                             <p class="progress-text">A letter from the founding volunteer of peacefrom.earth, VTX B. Xovington Xam-Xumana:</p>
                              <div class="fuel-gauge">
                     <div class="fuel-meter">
                         <div class="needle" id="monthly-progress"></div>
                     </div>
-                    <div class="fuel-marks">
-                        <span>E</span>
-                        <span>1/2</span>
-                        <span>F</span>
+                    <div >
+                        <div class="progress-bar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                    
+                    </div>
                     </div>
                 </div>
-                 <p><small>Resets in <span id="days-left"></span> days. Rehabilitating from a 5 figure medical bill and the end of both my daytime income sources following loss of transportation access. Offering gifts for supporters on a first come first serve basis. Show record of donation to "make a wish" for your gift below from the various objects listed in the "VTXb_uploads" bank to the right.</small></p>
+                 <p><small>In 2023, a seven year long selection process for post quantum cryptographic signature standards was concluded by the 
+                National Institute of Standards and Technology (NIST) - generating three quantum cryptographic standard selections amidst a 
+                zoo of more than twenty viable options. By the following year, 2024, the USA had a deluge of emerging legislation aiming to 
+                criminalize the applications of cryptographic signature standards by private citizens to the tune of six figure fines and decades 
+                under prison incarceration, should those private citizens be suspected of foreign collusion or considered to be subversive to the 
+                interests of the state, such as was the case with NC SB 686, legislation that ended up becoming mimicked by states all across the US.
+                <br><br>For state subjects, citzens and workers, observation of these events begs the questioning-- why would individual level quantum cryptographic signature based defensive protections 
+                construe anti-state subversion, particularly when the theft-based exploitation of citizen workers form the civil basis for profit production and unjust incarcerations? And further, to what 
+                extent could this come to incriminate participants and organizers of general strikes or other coordinated labor demonstrations as 
+                subversive and treasonous actors, when suitable for landowner class interest?
+                <br><br>
+                The guiding inquiry of my preoccupations at this time centers around how might some new expression of a successful, plural civil 
+                public result from inescapable physical and psychic incarcerations of Westphalian Nuclear Order. As such, I am presently in active 
+                conduct of an artistic research survey intended to express the so-called "depth of post-quantum cryptographic multivalence's 
+                operational agnosticism to variations of materialist scalar order ranging from civil subject level dramaturgy to multi-organizational 
+                choreography.”<br><br> 
+                This is a survey <a href="https://xxamxum.tech/meet#simulationreport001">in which artistic scrimmages of 
+                uses</a> for post quantum cryptographic signature standards within the context of possible 
+                labor movement are to be performed and harvested for data both qualitative and quantitative, as an expression of optimism for the 
+                emergence of an anti-hostile, plural, civil public that does not presently exist.
+                <br><br>
+                Elements of my artistic practice thus far have operated with regards to 
+                <br>(1) an assumption of cinematic motion picture and interactive 
+                media architectures as the primary artifacts of mythoi and constructors of monument within post-contemporary American mainstreams; 
+                <br>(2) a recognition of modern surveillance capitalism as a fundamentally cinematizing force; 
+                <br>(3) an identification of the virtues resultant from dictations of political legislation, financial contracts, theologies, and 
+                social contracts (inclusive of product terms of use) as being constructors of virtuality broken from the cephalism of visual 
+                display monitors and cameral interstice. In a world where our ability to document reality through linear pictorial forms, still 
+                or moving, is highly abstract at best.
+                <br><br>
+                Signed,<br>
+                VTX B. Xovington Xam-Xumana<br>
+                January 2025
+
+                <br><br>
+                P.S. Offering gifts for supporters on a first come first serve basis. Show record of donation to "make a wish" for your gift below from the various objects listed in the "VTXb_uploads" bank to the right.
+                      
+            </small></p>
 
                 
-                <div class="progress-bar">
-                    <div class="progress" id="progress"></div>
-                </div>
-                <p class="progress-text"><span id="percentage">0</span>% of $<span id="goal-amount">4500</span> goal reached</p>
-                <p>$<span id="current-amount">0</span> raised</p>
-                <a href="https://gofund.me/a1c4bc50" target="_blank" class="donate-button">Donate</a>
-                <p><small>Last updated: <span id="last-updated">Loading...</span></small></p>
-                </div>
+
         </div>
         <div class="column right-column">
             <div class="folder-content">
@@ -330,14 +366,13 @@
                         <a href="https://youtu.be/aFDzSKNLt94" data-categories="gifts free" data-quantity="1">I serve my babyteeth to you on lead crystal [link]</a>
                         <a href="https://www.ebay.com/itm/204998730929" data-categories="gifts" data-price="By Inquiry" data-quantity="10; Loan Eligible">Your choice from a set of 10 deciduous, naturally shed human milk molars and fragments [link]</a>
                         <a data-categories="media" data-price="30+" data-quantity="5">HAPPI Pie Special Recipe Booklet</a>
-                        <a data-categories="gifts" data-price="250+" data-quantity="3"> I handcraft a 100% Baobab Oil - "Firebroken Melon" Scented Moisturizing Anointing Oil in any size of your choosing</a>
+                        <a data-categories="gifts" data-price="250+" data-quantity="3"> I handcraft you two 4oz bottles of "Ole Dixonne" Fine Fragranced Blowing Bubbles</a>
                         <a href="https://www.ebay.com/itm/204558518019" data-categories="gifts" data-price="85+" data-quantity="1">I send you a copy of Physicist Robert Tyndall's "On Sound" (c.1881 printing) [link]</a>
                         <a href="https://n-prolenta.bandcamp.com/merch/blackwood-hall-commemorative-poster" data-categories="words" data-price="25+" data-quantity="40">"Stop The Steal" Framed Poster [link]</a>
-                        <a data-categories="gifts free" data-quantity="2">I make you a website not unlike this one for your very own mutual aid effort :)</a>
                         <a href="https://www.ebay.com/itm/204558533797" data-categories="gifts" data-price="70+" data-quantity="1"> I send you a Czecholovakian Perfume Bottle Art Glass With Stopper [link]</a>
                         <a data-categories="media" data-price="15+" data-quantity="10">"Upon The Perch Of Xerxes" Album Demo [Compact Disc]</a>
                         <a href="https://xxamxum.tech/p.occ.hypv1" data-categories="gifts" data-price="1500+" data-quantity="3">We Negotiate Your Publishing Rights for Forthcoming Digital Course Series Exploring Applications of Algebraic Topological Fiber Bundles Within Interaction Design Wireframing [link]</a>
-                        <a href="https://www.ebay.com/itm/204994540748" data-categories="gifts" data-price="20+" data-quantity="2">I send you a small lot of 3 limited edition Robert Rothschild Premium Reserve Moroccan Carrot Spreads. Simply perfect for tea sandwiches. [link]</a>
+                        <a href="https://www.ebay.com/itm/204994540748" data-categories="gifts" data-price="20+" data-quantity="2">I send you a limited edition container of Robert Rothschild Premium Reserve Moroccan Carrot Spreads. Simply perfect for tea sandwiches. [link]</a>
                         <a href="https://www.ebay.com/itm/204565660162" data-categories="gifts" data-price="70+" data-quantity="1">I send you a Neker Art Glass Perfume Flask to Eulogize However You Choose [link]</a>                        <!-- Add more links as needed -->
                     </div>
                     <script>
@@ -531,7 +566,7 @@
 
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
-            switchTab('tab1');
+            switchTab('tab2');
             ['free', 'words', 'media', 'gifts'].forEach(category => toggleCategory(category));
             displayMetadata();
         });
